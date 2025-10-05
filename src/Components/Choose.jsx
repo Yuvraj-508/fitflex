@@ -3,7 +3,7 @@ import { Dumbbell, Users, Utensils, Award } from "lucide-react";
 
 export default function FitnessLanding() {
   return (
-    <div className=" px-[4%] mt-30 bg-black text-white">
+    <div className=" px-[4%] mt-35 bg-black text-white">
       {/* Hero Section */}
       <div className="  px-6 py-16">
         <div className="grid md:grid-cols-2  ">

@@ -125,7 +125,7 @@ const Program = () => {
   };
 
   return (
-    <div className="h-[150vh]  bg-black relative overflow-hidden flex flex-col items-center justify-center p-8">
+    <div className="h-[180vh]  bg-black relative overflow-hidden flex flex-col items-center justify-center p-8">
       {/* Background Image with Overlay */}
 
       {/* Content */}
