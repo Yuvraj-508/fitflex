@@ -129,7 +129,7 @@ const Program = () => {
       {/* Background Image with Overlay */}
 
       {/* Content */}
-      <div className="relative top-35 text-center z-10 w-full max-w-5xl mx-auto">
+      <div className="relative  text-center z-10 w-full max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <div className="flex items-center justify-center gap-2 mb-4">
