@@ -25,7 +25,7 @@ server.use(express.json());
 
 // ✅ Routes
 server.get("/", (req, res) => {
-  res.send("Server is running successfully 🚀");
+  res.send("Server is runnning successfully 🚀");
 });
 
 server.use("/api", userRouter);
