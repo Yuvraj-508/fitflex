@@ -3,34 +3,31 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./config/db.js";
 import userRouter from './routes/userRouter.js';
+
 const server = express();
 const PORT = process.env.PORT || 3000;
 
-// 🧠 Connect to MongoDB
+// Connect to MongoDB
 await connectDB();
 
-// 🛡️ CORS Configuration
+// CORS configuration
 const corsOptions = {
   origin: [
-    'https://fitflex-one.vercel.app', // your frontend domain
-    'http://localhost:5173'           // local dev
+    'https://fitflex-one.vercel.app',
+    'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
-server.use(cors(corsOptions));
 
-// 🧩 Middleware
+// Middleware
+server.use(cors(corsOptions));
+server.options("*", cors(corsOptions)); // handle preflight
 server.use(express.json());
 
-// ✅ Routes
-server.get("/", (req, res) => {
-  res.send("Server is runnning successfully 🚀");
-});
-
+// Routes
+server.get("/", (req, res) => res.send("Server running 🚀"));
 server.use("/api", userRouter);
 
-// 🎧 Start Server
-server.listen(PORT, () => {
-  console.log(`✅ Server is running on port ${PORT}`);
-});
+// Start server
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
