@@ -12,9 +12,10 @@ await connectDB();
 // 🛡️ CORS Configuration
 const corsOptions = {
   origin: [
-    "http://localhost:5173", 
-    "https://fitflex-one.vercel.app"
+    'https://fitflex-one.vercel.app', // your frontend domain
+    'http://localhost:5173'           // local dev
   ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
 server.use(cors(corsOptions));
