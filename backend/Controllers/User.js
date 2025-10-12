@@ -58,7 +58,7 @@ import User from '../Models/User.js'
 
 
 
- async function addUser(req, res) {
+ export async function addUser(req, res) {
     try {
          const { name,email,phone,gender,age,address,joinDate,expiryDate,duration,price,status } = req.body;
        if(!name || !phone || !gender || !age || !joinDate || !expiryDate || !duration || !price){
@@ -98,7 +98,7 @@ import User from '../Models/User.js'
     });
     }
 }
-async function getUserList(req, res) {
+export async function getUserList(req, res) {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // normalize time to avoid partial day issues
@@ -128,7 +128,7 @@ async function getUserList(req, res) {
 }
 
 
-async function getUserById(req,res) {
+export async function getUserById(req,res) {
   try {
     const user = await User.findById(req.params.id);
 
@@ -144,4 +144,3 @@ async function getUserById(req,res) {
 }
 
 
-module.exports = { addUser,getUserList ,getUserById};
