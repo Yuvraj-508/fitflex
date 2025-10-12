@@ -9,11 +9,11 @@ import {
   MessageCircle,
   Calendar,
 } from "lucide-react";
-import img1 from '../assets/p1.avif';
-import img2 from '../assets/p2.avif';
-import img3 from '../assets/p3.avif';
-import img4 from '../assets/p4.avif';
-
+import { motion, AnimatePresence } from "framer-motion";
+import img1 from "../assets/p1.avif";
+import img2 from "../assets/p2.avif";
+import img3 from "../assets/p3.avif";
+import img4 from "../assets/p4.avif";
 
 const Program = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -29,8 +29,7 @@ const Program = () => {
         { icon: TrendingUp, text: "Before & After progress tracking" },
         { icon: MessageCircle, text: "24/7 chat with trainer support" },
       ],
-      image:
-        img1 
+      image: img1,
     },
     {
       id: "02",
@@ -55,7 +54,7 @@ const Program = () => {
         { icon: TrendingUp, text: "Macro tracking & analysis" },
         { icon: MessageCircle, text: "Daily nutrition support" },
       ],
-      image:img2
+      image: img2,
     },
     {
       id: "04",
@@ -67,8 +66,7 @@ const Program = () => {
         { icon: TrendingUp, text: "Macro tracking & analysis" },
         { icon: MessageCircle, text: "Daily nutrition support" },
       ],
-      image:
-       img3
+      image: img3,
     },
     {
       id: "05",
@@ -80,8 +78,8 @@ const Program = () => {
         { icon: TrendingUp, text: "Macro tracking & analysis" },
         { icon: MessageCircle, text: "Daily nutrition support" },
       ],
-      image:
-        img4    },
+      image: img4,
+    },
   ];
 
   const nextSlide = () => {
@@ -125,11 +123,8 @@ const Program = () => {
   };
 
   return (
-    <div className="h-[180vh]  bg-black relative overflow-hidden flex flex-col items-center justify-center p-8">
-      {/* Background Image with Overlay */}
-
-      {/* Content */}
-      <div className="relative  text-center z-10 w-full max-w-5xl mx-auto">
+    <div className="h-[180vh] bg-black relative overflow-hidden flex flex-col items-center justify-center p-8">
+      <div className="relative text-center z-10 w-full max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -154,23 +149,33 @@ const Program = () => {
             style={{ perspective: "2000px" }}
           >
             <div className="relative w-full h-full flex items-center justify-center">
-              {programs.map((program, index) => {
-                const style = getCardStyle(index);
-                const isActive = index === activeIndex;
+              <AnimatePresence>
+                {programs.map((program, index) => {
+                  const style = getCardStyle(index);
+                  const isActive = index === activeIndex;
 
-                return (
-                  <div
-                    key={program.id}
-                    className="absolute w-96 h-[520px] transition-all duration-700 ease-out cursor-pointer"
-                    style={{
-                      ...style,
-                      transformStyle: "preserve-3d",
-                    }}
-                    onClick={() => setActiveIndex(index)}
-                  >
-                    <div className="w-full h-full bg-black rounded-2xl overflow-hidden shadow-2xl border border-yellow-400/20 flex flex-col relative">
-                      {/* Content */}
-                      <div className="relative z-10 flex flex-col h-full">
+                  return (
+                    <motion.div
+                      key={program.id}
+                      className="absolute w-96 h-[520px] cursor-pointer"
+                      style={{ ...style, transformStyle: "preserve-3d" }}
+                      onClick={() => setActiveIndex(index)}
+                      initial={{ opacity: 0, y: 50, scale: 0.8 }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                        scale: isActive ? 1 : 0.85,
+                      }}
+                      viewport={{ once: true, amount: 0.3 }} // triggers when 30% visible
+                      transition={{ duration: 0.7 }}
+                    >
+                      <motion.div
+                        className="w-full h-full bg-black rounded-2xl overflow-hidden shadow-2xl border border-yellow-400/20 flex flex-col relative"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: isActive ? 0.3 : 0 }}
+                      >
                         {/* Number at top right */}
                         <div className="flex items-start justify-end p-6 pb-0">
                           <span
@@ -183,47 +188,61 @@ const Program = () => {
                         </div>
 
                         {/* Image Section */}
-                        <div className="relative h-60 overflow-hidden mx-6 mt-4 rounded-xl ">
-                          <img
+                        <div className="relative h-60 overflow-hidden mx-6 mt-4 rounded-xl">
+                          <motion.img
                             src={program.image}
                             alt={program.title}
-                            className={`w-full h-full object-cover object-top transition-all duration-500 ${
-                              isActive
-                                ? "opacity-100 scale-100"
-                                : "opacity-40 scale-95"
-                            }`}
+                            className="w-full h-full object-cover object-top transition-all duration-500"
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            whileInView={{
+                              scale: isActive ? 1 : 0.95,
+                              opacity: isActive ? 1 : 0.4,
+                            }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ duration: 0.7 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         </div>
 
                         {/* Text Content */}
                         <div className="p-6 flex flex-col flex-grow">
-                          <h2
-                            className={`text-xl font-black mb-3 tracking-tight ${
-                              isActive ? "text-white" : "text-white/40"
-                            } transition-colors duration-500`}
+                          <motion.h2
+                            className="text-xl font-black mb-3 tracking-tight"
+                            initial={{ y: 20, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: isActive ? 1 : 0.3 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ duration: 0.7, delay: 0.2 }}
                           >
                             {program.title}
-                          </h2>
+                          </motion.h2>
 
-                          <p
-                            className={`text-xs mb-6 leading-relaxed ${
-                              isActive ? "text-gray-300" : "text-gray-600"
-                            } transition-colors duration-500`}
+                          <motion.p
+                            className="text-xs mb-6 leading-relaxed"
+                            initial={{ y: 10, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: isActive ? 1 : 0.3 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ duration: 0.7, delay: 0.3 }}
                           >
                             {program.description}
-                          </p>
+                          </motion.p>
 
                           {/* Features */}
                           <div className="space-y-3 mt-auto">
                             {program.features.map((feature, idx) => {
                               const Icon = feature.icon;
                               return (
-                                <div
+                                <motion.div
                                   key={idx}
-                                  className={`flex items-center gap-3 ${
-                                    isActive ? "opacity-100" : "opacity-30"
-                                  } transition-opacity duration-500`}
+                                  className="flex items-center gap-3"
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{
+                                    opacity: isActive ? 1 : 0.3,
+                                    x: 0,
+                                  }}
+                                  transition={{
+                                    duration: 0.7,
+                                    delay: 0.4 + idx * 0.1,
+                                  }}
                                 >
                                   <div
                                     className={`w-2 h-2 rounded-full ${
@@ -244,16 +263,16 @@ const Program = () => {
                                   >
                                     {feature.text}
                                   </span>
-                                </div>
+                                </motion.div>
                               );
                             })}
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
           </div>
 
