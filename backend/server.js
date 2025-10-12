@@ -13,7 +13,7 @@ await connectDB();
 const corsOptions = {
   origin: [
     "http://localhost:5173", 
-    "https://fitflex-chi.vercel.app"
+    "https://fitflex-one.vercel.app"
   ],
   credentials: true,
 };
