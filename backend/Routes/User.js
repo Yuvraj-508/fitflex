@@ -1,6 +1,6 @@
 const express = require('express');
 const userRouter = express.Router();
-const  {addUser, getUserList, getUserById } = require('../controllers/user.js');
+const  {addUser, getUserList, getUserById } = require('../controllers/User.js');
 
 
 userRouter.post('/add-user',addUser);
