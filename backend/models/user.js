@@ -1,14 +1,4 @@
-const mongoose = require('mongoose');
-
-
-mongoose.connect('mongodb://localhost:27017/fitnix', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    console.log('Connected to MongoDB');
-}).catch((err) => {
-    console.error('Error connecting to MongoDB', err);
-});
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
@@ -25,4 +15,4 @@ email: { type: String, unique: true, sparse: true },
 }, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
-module.exports = User;
+export default  User;

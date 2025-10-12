@@ -1,4 +1,4 @@
-const User = require('../models/User.js');
+import User from '../models/User'
 // const fs = require('fs');
 // const path = require('path');
 // const PDFDocument = require('pdfkit');

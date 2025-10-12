@@ -1,26 +1,36 @@
-const express = require('express');
-const userRouter = require('./Routes/User.js');
-const server= express();
-import 'dotenv/config';
-import connectDB from './config/db.js';
-const PORT = process.env.PORT || 3000;
-const cors = require('cors');
+import express from "express";
+import cors from "cors";
+import "dotenv/config";
+import connectDB from "./config/db.js";
+import userRouter from "./Routes/User.js";
 
+const server = express();
+const PORT = process.env.PORT || 3000;
+
+// 🧠 Connect to MongoDB
 await connectDB();
+
+// 🛡️ CORS Configuration
 const corsOptions = {
-    origin:[ 'http://localhost:5173','https://fitflex-chi.vercel.app'],
-     credentials: true
+  origin: [
+    "http://localhost:5173", 
+    "https://fitflex-chi.vercel.app"
+  ],
+  credentials: true,
 };
 server.use(cors(corsOptions));
+
+// 🧩 Middleware
 server.use(express.json());
 
-
-server.get('/', (req, res) => {
-    res.send('Server is running');
+// ✅ Routes
+server.get("/", (req, res) => {
+  res.send("Server is running successfully 🚀");
 });
 
-server.use('/api',userRouter);
+server.use("/api", userRouter);
 
+// 🎧 Start Server
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
