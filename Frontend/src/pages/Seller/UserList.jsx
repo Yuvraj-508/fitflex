@@ -16,7 +16,7 @@ const fetchUsers = async () => {
       setLoading(true); // show loader before fetching
       const {data} = await axios.get("/api/user-list");
       if(data.success){
-      setUsers(data);
+     setUsers(data.userList);
     }
     } catch (err) {
       toast.error("Error fetching users:", err);
@@ -26,7 +26,7 @@ const fetchUsers = async () => {
   };
  useEffect(() => {
   fetchUsers();
-}, []);
+}, [ ]);
 
 
   // Filter by search + status
@@ -53,7 +53,7 @@ const fetchUsers = async () => {
     navigate(`/seller/user-profile/${userId}`);
   };
 
-  if (loading) return <Loader message="Fetching users, please wait..." />;
+  // if (loading) return <Loader message="Fetching users, please wait..." />;
   return (
     <div className="flex-1 min-h-screen bg-gray-50 p-6">
       <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-md p-6 border border-gray-200">
@@ -86,11 +86,14 @@ const fetchUsers = async () => {
 
         {/* Table */}
         <div className="overflow-x-auto rounded-xl border border-gray-200">
-          {loading ? (
-            <div className="text-center py-10 text-gray-500">
-              Loading users...
-            </div>
-          ) : (
+         {loading ? (
+    // Loader section
+    <div className="flex flex-col items-center justify-center py-10">
+      {/* Spinner */}
+      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+      <p className="text-gray-600 font-medium">Fetching users, please wait...</p>
+    </div>
+  ) : (
             <table className="w-full text-sm">
               <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
                 <tr>
