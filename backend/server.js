@@ -22,7 +22,6 @@ const corsOptions = {
 
 // Middleware
 server.use(cors(corsOptions));
-server.options("*", cors(corsOptions)); // handle preflight
 server.use(express.json());
 
 // Routes
