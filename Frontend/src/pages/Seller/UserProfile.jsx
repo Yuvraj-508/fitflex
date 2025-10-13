@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { useAppContext } from "../../Context/Context";
 const UserProfile = () => {
   const { id } = useParams();
-  const { navigate,axios } = useAppContext();
+  const { navigate, axios } = useAppContext();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -132,7 +132,10 @@ const UserProfile = () => {
               Back
             </button>
 
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium shadow-md transition-all">
+            <button
+              onClick={() => navigate("/seller/?=update", { state: { user } })}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium shadow-md transition-all"
+            >
               Edit Profile
             </button>
           </div>

@@ -132,17 +132,18 @@ const fetchUsers = async () => {
                         {new Date(user.expiryDate).toLocaleDateString()}
                       </td>
                       <td className="py-3 px-4">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            user.status === "Active"
-                              ? "bg-green-100 text-green-800"
-                              : user.status === "Expired"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {user.status}
-                        </span>
+                     <span
+  className={`px-2 py-1 rounded-full text-xs font-medium ${
+    user.status === "Active"
+      ? "bg-green-100 text-green-800"
+      : user.status === "Expired"
+      ? "bg-red-100 text-red-800"
+      : "bg-yellow-100 text-yellow-800 animate-pulse"
+  }`}
+>
+  {user.status}
+</span>
+
                       </td>
                       <td className="py-3 px-4 text-center">
                         <button

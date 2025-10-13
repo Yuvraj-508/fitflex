@@ -143,4 +143,23 @@ export async function getUserById(req,res) {
   }
 }
 
+// controllers/userController.js
+
+// Update User
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedData = req.body;
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ success: false, message: "Failed to update user" });
+  }
+};
 
