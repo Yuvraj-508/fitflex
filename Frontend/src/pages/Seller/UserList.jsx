@@ -4,16 +4,29 @@ import { useAppContext } from "../../Context/Context";
 import toast from "react-hot-toast";
 import Loader from "../../Components/Loader";
 const UserList = () => {
-  const { users, navigate,setUsers,axios,fetchUsers ,loading} = useAppContext();
+  const { users, navigate,setUsers,axios} = useAppContext();
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState(""); // "" = All
-
+const [loading, setLoading] = useState(true);  
   // Process users (mark expired if needed)
+const fetchUsers = async () => {
+    try {
+      setLoading(true); // show loader before fetching
+      const {data} = await axios.get("/api/user-list");
+      if(data.success){
+      setUsers(data);
+    }
+    } catch (err) {
+      toast.error("Error fetching users:", err);
+    } finally {
+      setLoading(false); // hide loader after fetching
+    }
+  };
  useEffect(() => {
   fetchUsers();
-}, [fetchUsers]);
+}, []);
 
 
   // Filter by search + status
