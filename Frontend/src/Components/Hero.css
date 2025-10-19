@@ -6,3 +6,9 @@
     background-position: center;
 
 }
+
+@media screen and (max-width: 450px) {
+    .hero {
+        background-position: -80% 0%; /* horizontal -50%, vertical 50% */
+    }
+}
