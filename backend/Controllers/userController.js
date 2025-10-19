@@ -1,103 +1,103 @@
 import User from '../models/User.js'
-// const fs = require('fs');
-// const path = require('path');
-// const PDFDocument = require('pdfkit');
+import fs from "fs";
+import path from "path";
+// utils/generateInvoice.js
+import puppeteer from "puppeteer-core";
+export async function generateInvoice(user) {
+  const html = `
+    <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 40px; }
+          .header { text-align: center; color: #4f46e5; }
+          .logo { width: 80px; height: 80px; margin-bottom: 10px; }
+          .details, .membership { margin-top: 20px; }
+          .details div, .membership div { margin-bottom: 5px; }
+          .membership { background: #f3f4f6; padding: 10px; border-radius: 8px; }
+          .footer { text-align: center; margin-top: 30px; color: gray; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://yourgymlogo.com/logo.png" class="logo"/>
+          <h1>Gym Membership Invoice</h1>
+        </div>
 
-// async function generateInvoice(user) {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       const invoicesDir = path.join(__dirname, '../invoices');
+        <div class="details">
+          <div><strong>Name:</strong> ${user.name}</div>
+          <div><strong>Phone:</strong> ${user.phone}</div>
+          <div><strong>Email:</strong> ${user.email || "N/A"}</div>
+          <div><strong>Status:</strong> ${user.status}</div>
+        </div>
 
-//       // Create invoices folder if it doesn't exist
-//       if (!fs.existsSync(invoicesDir)) {
-//         fs.mkdirSync(invoicesDir, { recursive: true });
-//       }
+        <div class="membership">
+          <div><strong>Membership Type:</strong> ${user.duration}</div>
+          <div><strong>Join Date:</strong> ${new Date(user.joinDate).toLocaleDateString()}</div>
+          <div><strong>Expiry Date:</strong> ${new Date(user.expiryDate).toLocaleDateString()}</div>
+          <div><strong>Price:</strong> ₹${user.price}</div>
+        </div>
 
-//       const invoicePath = path.join(invoicesDir, `${user.name}_${Date.now()}.pdf`);
+        <div class="footer">
+          Thank you for being part of our fitness family!
+        </div>
+      </body>
+    </html>
+  `;
 
-//       const doc = new PDFDocument({ size: "A4", margin: 50 });
-//       doc.pipe(fs.createWriteStream(invoicePath));
+const browser = await puppeteer.launch({
+  executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", // macOS path
+  headless: true, // run in background
+});
 
-//       // Header
-//       doc.fillColor("#444444").fontSize(20).text("FITNIX GYM", { align: "center" }).moveDown();
+  const page = await browser.newPage();
+  await page.setContent(html);
+  const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
+  await browser.close();
 
-//       doc.fontSize(16).fillColor("#000")
-//         .text(`Invoice for: ${user.name}`)
-//         .text(`Email: ${user.email || "N/A"}`)
-//         .text(`Phone: ${user.phone}`)
-//         .moveDown();
-
-//       // Membership Info
-//       doc.fontSize(14).fillColor("#444").text("Membership Details:", { underline: true }).moveDown(0.5);
-
-//       const membershipDetails = [
-//         { label: "Duration", value: user.duration },
-//         { label: "Join Date", value: new Date(user.joinDate).toDateString() },
-//         { label: "Expiry Date", value: new Date(user.expiryDate).toDateString() },
-//         { label: "Price (₹)", value: user.price },
-//         { label: "Status", value: user.status },
-//       ];
-
-//       membershipDetails.forEach((item) => {
-//         doc.text(`${item.label}: ${item.value}`);
-//       });
-
-//       doc.moveDown(2)
-//         .fillColor("#000")
-//         .fontSize(12)
-//         .text("Thank you for joining FITNIX Gym!", { align: "center" });
-
-//       doc.end();
-
-//       resolve(invoicePath);
-//     } catch (error) {
-//       reject(error);
-//     }
-//   });
-// }
+  return pdfBuffer;
+}
 
 
 
- export async function addUser(req, res) {
-    try {
-         const { name,email,phone,gender,age,address,joinDate,expiryDate,duration,price,status } = req.body;
-       if(!name || !phone || !gender || !age || !joinDate || !expiryDate || !duration || !price){
-        return res.status(400).json({ error: 'Please fill all required fields' });
-       }
-       console.log(req.body);
-   
+
+
+
+
+export async function addUser(req, res) {
+  try {
+    const { name, email, phone, gender, age, joinDate, expiryDate, duration, price, status } = req.body;
+
     const newUser = await User.create({
-        name,
-    email: email ? email : undefined,
-        phone,
-        gender,
-        age,
-        address,
-        joinDate,
-        expiryDate,
-        duration,
-        price,
-        status
+      name, email, phone, gender, age, joinDate, expiryDate, duration, price, status
     });
 
-//  const invoicePath = await generateInvoice(newUser);
+    // Generate PDF (your existing function)
+    const pdfBuffer = await generateInvoice(newUser);
+
+    // Ensure invoices folder exists
+    const invoicesDir = path.join(process.cwd(), "invoices");
+    if (!fs.existsSync(invoicesDir)) {
+      fs.mkdirSync(invoicesDir, { recursive: true });
+    }
+
+    // Save PDF
+    const filePath = path.join(invoicesDir, `${newUser._id}.pdf`);
+    fs.writeFileSync(filePath, pdfBuffer);
 
     res.status(201).json({
       success: true,
       message: "User added successfully",
       user: newUser,
-      // invoicePath, // send path or URL to frontend
+      invoicePath: `/invoices/${newUser._id}.pdf`
     });
-      }
-     catch (error) {
-        console.error('Error adding user:', error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
-    }
+
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 }
+
+
 export async function getUserList(req, res) {
   try {
     const today = new Date();

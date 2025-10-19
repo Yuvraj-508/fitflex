@@ -26,45 +26,42 @@ function App() {
   const { isSeller,loading } = useAppContext();
 
   return (
-    <div
-      className={`${!isSellerPath ? "bg-black h-full overflow-hidden" : " "}`}
-    >
-      {loading && <Loader message="Fetching users, please wait..." />}
-      {!isSellerPath && <Navbar />}
-      <Toaster/>
+   <div className={`${!isSellerPath ? "bg-black min-h-screen" : ""}`}>
+  {loading && <Loader message="Fetching users, please wait..." />}
+  <Toaster />
 
-      {!isSellerPath ? (
-        // Only homepage content
-        <div>
-          <Hero />
-          <Program />
-          <Transformation />
-          <Choose />
-          <PricingPlan />
-          <TestimonialSection />
-          <ContactForm />
-        </div>
-      ) : (
-        // Seller routes
-        <Routes>
-          <Route
-            path="/seller"
-            element={isSeller ? <SellerLayout /> : <SellerLogin />}
-          >
-            <Route index element={<Adduser />} />
-            <Route path="user-list" element={<UserList />} />
+  {!isSellerPath && <Navbar />}
 
-            {/* Add :id for dynamic user */}
-            <Route path="user-profile/:id" element={<UserProfile />} />
+  {!isSellerPath ? (
+    // 🌟 Homepage content wrapped in <main> for blur effect
+    <main className="transition-all duration-500 ease-in-out">
+      <Hero />
+      <Program />
+      <Transformation />
+      <Choose />
+      <PricingPlan />
+      <TestimonialSection />
+      <ContactForm />
+    </main>
+  ) : (
+    // 🧑‍💻 Seller (admin) routes
+    <Routes>
+      <Route
+        path="/seller"
+        element={isSeller ? <SellerLayout /> : <SellerLogin />}
+      >
+        <Route index element={<Adduser />} />
+        <Route path="user-list" element={<UserList />} />
+        <Route path="user-profile/:id" element={<UserProfile />} />
+        <Route path="dashboard" element={<SellerDashboard />} />
+        <Route path="analytics" element={<Analytics />} />
+      </Route>
+    </Routes>
+  )}
 
-            <Route path="dashboard" element={<SellerDashboard />} />
-            <Route path="analytics" element={<Analytics/>}/>
-          </Route>
-        </Routes>
-      )}
+  {!isSellerPath && <FitnessFooter />}
+</div>
 
-      {!isSellerPath && <FitnessFooter />}
-    </div>
   );
 }
 export default App;

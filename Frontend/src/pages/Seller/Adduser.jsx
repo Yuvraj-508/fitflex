@@ -72,13 +72,27 @@ const AddUser = () => {
 
       const { data } = response;
       if (data.success) {
-        toast.success(
-          isEditMode
-            ? "Member updated successfully!"
-            : "Member added successfully!"
-        );
-        navigate("/seller/user-list"); // redirect after success
-      } else {
+  toast.success(
+    isEditMode
+      ? "Member updated successfully!"
+      : "Member added successfully!"
+  );
+
+  // Only for new user: download PDF
+  if (!isEditMode && data.invoicePath) {
+  const link = document.createElement("a");
+  link.href = data.invoicePath;
+  link.download = `${name}_invoice.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+
+  // Redirect after download or update
+  navigate("/seller/user-list");
+}
+ else {
         toast.error(data.message || "Something went wrong!");
       }
     } catch (error) {

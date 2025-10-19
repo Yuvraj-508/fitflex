@@ -63,82 +63,85 @@ export default function TestimonialSection() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   return (
-    <div className="mt-15 bg-black text-white py-20 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-yellow-400 text-sm font-semibold uppercase mb-3">
-            Testimonials
-          </p>
-          <div className="flex items-center justify-center mt-5 mb-8">
-            <Star className="text-yellow-400 animate-bounce w-8 h-8 mr-4" />
-            <h2 className="text-6xl font-bold text-center">
-              Voice of our members
-            </h2>
-            <Star className="text-yellow-400 animate-bounce w-8 h-8 ml-4" />
-          </div>
+  <div className="testimonial mt-20 bg-black text-white py-20 relative overflow-hidden">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
 
-          {/* Animated content */}
-          <div className="mt-10 min-h-[120px]">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={activeTestimonial}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="text-xl text-gray-300 max-w-3xl font-bold mx-auto leading-relaxed"
-              >
-                {testimonials[activeTestimonial].content}
-              </motion.p>
-            </AnimatePresence>
-          </div>
-        </div>
+    {/* Header */}
+    <div className="text-center mb-16">
+      <p className="text-yellow-400 text-xs sm:text-sm font-semibold uppercase mb-3 tracking-wide">
+        Testimonials
+      </p>
 
-        {/* Avatar Navigation */}
-        <div className="flex justify-center items-center gap-8 mb-20 flex-wrap">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              onClick={() => setActiveTestimonial(index)}
-              whileTap={{ scale: 0.95 }}
-              whileHover={{ scale: 1.05 }}
-              className={`cursor-pointer transition-all duration-300 ${
-                index === activeTestimonial
-                  ? "scale-110"
-                  : "opacity-70 hover:opacity-100"
-              }`}
-            >
-              {index === activeTestimonial ? (
-                <motion.div
-                  layout
-                  className="flex items-center gap-5 rounded-full p-2 border-2 border-yellow-400 bg-zinc-900"
-                >
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-15 h-15 rounded-full object-cover"
-                  />
-                  <div className="text-left">
-                    <div className="font-bold text-white">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-zinc-400">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-14 h-14 rounded-full object-cover border-2 border-yellow-400"
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
+      <div className="flex items-center justify-center mt-4 mb-6 flex-wrap gap-2">
+        <Star className="text-yellow-400 animate-bounce w-6 h-6 sm:w-8 sm:h-8" />
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center">
+          Voice of our members
+        </h2>
+        <Star className="text-yellow-400 animate-bounce w-6 h-6 sm:w-8 sm:h-8" />
+      </div>
+
+      {/* Animated content */}
+      <div className="mt-8 min-h-[100px] sm:min-h-[120px] px-2">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={activeTestimonial}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl font-medium sm:font-semibold mx-auto leading-relaxed text-center"
+          >
+            {testimonials[activeTestimonial].content}
+          </motion.p>
+        </AnimatePresence>
       </div>
     </div>
+
+    {/* Avatar Navigation */}
+    <div className="flex justify-center items-center gap-6 sm:gap-8 md:gap-10 mb-10 sm:mb-16 flex-wrap px-4">
+      {testimonials.map((testimonial, index) => (
+        <motion.div
+          key={testimonial.id}
+          onClick={() => setActiveTestimonial(index)}
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          className={`cursor-pointer transition-all duration-300 ${
+            index === activeTestimonial
+              ? "scale-110"
+              : "opacity-70 hover:opacity-100"
+          }`}
+        >
+          {index === activeTestimonial ? (
+            <motion.div
+              layout
+              className="flex items-center gap-3 sm:gap-5 rounded-full p-2 sm:p-3 border-2 border-yellow-400 bg-zinc-900"
+            >
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full object-cover"
+              />
+              <div className="text-left hidden sm:block">
+                <div className="font-bold text-white text-sm sm:text-base md:text-lg">
+                  {testimonial.name}
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
+                  {testimonial.role}
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <img
+              src={testimonial.image}
+              alt={testimonial.name}
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-yellow-400"
+            />
+          )}
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</div>
+
   );
 }
